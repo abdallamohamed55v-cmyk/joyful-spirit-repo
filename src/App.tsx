@@ -659,6 +659,8 @@ const App = () => {
                 </RouteErrorBoundary>
               </Suspense>
             </BrowserRouter>
+            <Analytics />
+            <SpeedInsights />
           </ErrorBoundary>
         </TooltipProvider>
       </QueryClientProvider>
