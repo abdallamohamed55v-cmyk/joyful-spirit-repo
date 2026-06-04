@@ -7444,6 +7444,7 @@ export type Database = {
           tier_name: string
         }[]
       }
+      get_workspace_invite_details: { Args: { p_token: string }; Returns: Json }
       has_unlimited_plan: { Args: { p_user_id: string }; Returns: boolean }
       is_conversation_member: {
         Args: { p_conversation_id: string; p_user_id: string }
