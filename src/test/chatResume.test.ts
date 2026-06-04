@@ -3,12 +3,12 @@ import {
   addActiveChatJob,
   getActiveChatJobs,
   removeActiveChatJob,
+  _resetActiveChatJobsForTests,
 } from "@/lib/jobs/chatResume";
 
 describe("chatResume (in-memory tracker)", () => {
   beforeEach(() => {
-    // Clear all in-memory state by removing any leftover jobs from prior tests.
-    for (const j of getActiveChatJobs("__sweep__")) removeActiveChatJob(j.jobId);
+    _resetActiveChatJobsForTests();
     vi.useRealTimers();
   });
 
