@@ -217,7 +217,7 @@ const SupportPage = () => {
             <textarea
               value={input}
               onChange={e => setInput(e.target.value)}
-              onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
+              onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey && (typeof window === 'undefined' || window.innerWidth >= 768)) { e.preventDefault(); handleSend(); } }}
               placeholder="Ask about features, billing, account issues, or anything about Megsy..."
               rows={1}
               className="flex-1 bg-secondary/50 border border-border rounded-xl px-4 py-3 text-sm text-foreground outline-none resize-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground/50 max-h-32 selectable"

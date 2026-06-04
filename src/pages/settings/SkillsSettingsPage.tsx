@@ -495,7 +495,7 @@ function ComposerBox({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); onSubmit(); }
+          if (e.key === "Enter" && !e.shiftKey && (typeof window === 'undefined' || window.innerWidth >= 768)) { e.preventDefault(); onSubmit(); }
         }}
         rows={1}
         placeholder="Describe the expert you want…"
@@ -737,7 +737,7 @@ function SkillDesigner({
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
+                  if (e.key === "Enter" && !e.shiftKey && (typeof window === 'undefined' || window.innerWidth >= 768)) { e.preventDefault(); send(); }
                 }}
                 rows={1}
                 placeholder={hasDraft ? "Refine the skill — e.g. \"add SEO triggers\", \"make tone bolder\"…" : "Describe the expert you want…"}

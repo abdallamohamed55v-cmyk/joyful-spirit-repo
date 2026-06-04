@@ -929,7 +929,7 @@ const MediaHubPage = () => {
                         className="block w-full max-w-full bg-transparent outline-none resize-none text-sm text-foreground placeholder:text-transparent px-2 py-2 overflow-y-auto break-words"
                         style={{ wordBreak: "break-word", maxHeight: "140px" }}
                         onKeyDown={(e) => {
-                          if (e.key === "Enter" && !e.shiftKey) {
+                          if (e.key === "Enter" && !e.shiftKey && (typeof window === 'undefined' || window.innerWidth >= 768)) {
                             e.preventDefault();
                             handleGenerate();
                           }

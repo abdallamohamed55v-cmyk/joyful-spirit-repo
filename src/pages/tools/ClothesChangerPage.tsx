@@ -570,7 +570,7 @@ const ClothesChangerPage = () => {
                       el.style.height = Math.min(el.scrollHeight, 160) + "px";
                     }}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter" && !e.shiftKey) {
+                      if (e.key === "Enter" && !e.shiftKey && (typeof window === 'undefined' || window.innerWidth >= 768)) {
                         e.preventDefault();
                         handleGenerate();
                       }

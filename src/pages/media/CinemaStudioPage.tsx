@@ -321,7 +321,7 @@ export default function CinemaStudioPage() {
                 value={sel.prompt}
                 onChange={(e) => setSel((p) => ({ ...p, prompt: e.target.value }))}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
+                  if (e.key === "Enter" && !e.shiftKey && (typeof window === 'undefined' || window.innerWidth >= 768)) {
                     e.preventDefault();
                     handleGenerate();
                   }
