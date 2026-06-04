@@ -157,16 +157,26 @@ const SettingsPage = () => {
           {/* CTA zone — Upgrade + Referrals */}
           <div className="mt-3 mb-4 space-y-1.5">
             {(() => {
-              const order = ["free", "starter", "pro", "elite", "enterprise"];
-              const idx = Math.max(0, order.indexOf((plan || "free").toLowerCase()));
-              const next = order[Math.min(order.length - 1, idx + 1)];
+              const order = ["free", "starter", "pro", "elite", "business", "enterprise"];
+              const cur = (plan || "free").toLowerCase();
+              const idx = Math.max(0, order.indexOf(cur));
               const atTop = idx >= order.length - 1;
+              // For top-tier (Enterprise) users, Megsy recommends top-up credits
+              // — the most useful action once every paid tier is unlocked.
+              if (atTop) {
+                return (
+                  <FancyButton onClick={() => navigate("/settings/credits")} className="w-full">
+                    <MegsyStar className="w-3.5 h-3.5" />
+                    Megsy recommends: Top up credits
+                  </FancyButton>
+                );
+              }
+              const next = order[Math.min(order.length - 1, idx + 1)];
               const nextLabel = next.charAt(0).toUpperCase() + next.slice(1);
-              const cta = atTop ? "Manage Enterprise" : `Upgrade to ${nextLabel}`;
               return (
                 <FancyButton onClick={() => navigate("/pricing")} className="w-full">
                   <MegsyStar className="w-3.5 h-3.5" />
-                  {cta}
+                  {`Get ${nextLabel}`}
                 </FancyButton>
               );
             })()}
