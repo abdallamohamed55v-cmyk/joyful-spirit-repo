@@ -90,7 +90,7 @@ const UnifiedInputBar = ({
           rows={2}
           value={prompt}
           onChange={e => onPromptChange(e.target.value)}
-          onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); onGenerate(); } }}
+          onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey && typeof window !== "undefined" && window.innerWidth >= 768) { e.preventDefault(); onGenerate(); } }}
           placeholder={displayedPlaceholder + (isTyping ? "|" : "")}
           className="min-h-[64px] w-full resize-none bg-transparent text-sm leading-relaxed text-foreground outline-none placeholder:text-muted-foreground/40"
         />
