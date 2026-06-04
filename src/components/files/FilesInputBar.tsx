@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Paperclip, Image, Globe, ArrowUp, Loader2, X, FileText } from "lucide-react";
+import { Plus, Paperclip, Image, Globe, ArrowUp, Loader2, X, FileText, Square } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import MentionDropdown from "@/components/chat/MentionDropdown";
 import type { AgentDef } from "@/lib/agentRegistry";
