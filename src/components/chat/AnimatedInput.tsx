@@ -102,7 +102,8 @@ const AnimatedInput = ({ value, onChange, onSend, onCancel, onPlusClick, disable
       setModelPickerOpen(false);
       return;
     }
-    if (e.key === "Enter" && !e.shiftKey) {
+    // Desktop: Enter sends. Mobile: Enter inserts a newline (no preventDefault).
+    if (isSendKey(e)) {
       e.preventDefault();
       if (mentionOpen || modelPickerOpen) { setMentionOpen(false); setModelPickerOpen(false); return; }
       if (value.trim() && !disabled && !isLoading) onSend();
