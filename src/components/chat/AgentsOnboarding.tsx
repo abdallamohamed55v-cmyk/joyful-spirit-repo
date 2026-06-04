@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, CornerDownLeft } from "lucide-react";
@@ -19,7 +20,7 @@ const svgProps = {
   strokeLinejoin: "round" as const,
 };
 
-const SERVICES: { id: string; label: string; icon: JSX.Element }[] = [
+const SERVICES: { id: string; label: string; icon: React.JSX.Element }[] = [
   {
     id: "slides",
     label: "Slides",

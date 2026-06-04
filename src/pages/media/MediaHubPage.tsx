@@ -1,3 +1,4 @@
+import React from "react";
 import SEOHead from "@/components/common/SEOHead";
 import { useState, useEffect, useRef, type CSSProperties } from "react";
 
@@ -73,7 +74,7 @@ import {
 
 type Mode = "image" | "video";
 type Tab = "home" | "studio" | "community";
-type IconCmp = (p: { className?: string; strokeWidth?: number }) => JSX.Element;
+type IconCmp = (p: { className?: string; strokeWidth?: number }) => React.JSX.Element;
 
 
 

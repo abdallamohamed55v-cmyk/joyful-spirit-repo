@@ -24,15 +24,16 @@
     "skipLibCheck": true,
     "strict": false,
     "target": "ES2020",
-    "types": [
-      "vitest/globals"
-    ],
+    "types": [],
     "useDefineForClassFields": true
   },
   "include": [
     "src"
   ],
   "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/test",
     "src/lib/seed-templates",
     "src/router.tsx",
     "src/start.ts",
