@@ -553,20 +553,29 @@ const PricingPage = () => {
 
 
                   {/* CTA — hide on Free plan (no checkout needed) */}
-                  {p.tier !== "starter" && (
-                    <GlowButton
-                      variant={p.tier as "starter" | "pro" | "elite" | "business"}
-                      onClick={() => handleSubscribe(p.tier)}
-                      disabled={loadingTier !== null}
-                      className="mt-6 w-full"
-                    >
-                      {loadingTier === p.tier ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : (
-                        `Get ${p.name}`
-                      )}
-                    </GlowButton>
-                  )}
+                  {p.tier !== "starter" && (() => {
+                    const order: PlanTier[] = ["starter", "pro", "elite", "business"];
+                    const cur = (currentPlan ?? "starter").toLowerCase() as PlanTier;
+                    const curIdx = order.indexOf(cur);
+                    const thisIdx = order.indexOf(p.tier);
+                    const isCurrent = curIdx === thisIdx;
+                    const isLower = thisIdx < curIdx;
+                    const label = isCurrent ? "Current plan" : isLower ? `Downgrade to ${p.name}` : `Get ${p.name}`;
+                    return (
+                      <GlowButton
+                        variant={p.tier as "starter" | "pro" | "elite" | "business"}
+                        onClick={() => handleSubscribe(p.tier)}
+                        disabled={loadingTier !== null || isCurrent}
+                        className="mt-6 w-full"
+                      >
+                        {loadingTier === p.tier ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          label
+                        )}
+                      </GlowButton>
+                    );
+                  })()}
 
 
 
