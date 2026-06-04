@@ -34,6 +34,11 @@ export function removeActiveChatJob(jobId: string): void {
   jobs.delete(jobId);
 }
 
+/** Test-only: wipe in-memory state between tests. */
+export function _resetActiveChatJobsForTests(): void {
+  jobs.clear();
+}
+
 export function getActiveChatJobs(conversationId: string): ActiveChatJob[] {
   prune();
   return Array.from(jobs.values()).filter((j) => j.conversationId === conversationId);
