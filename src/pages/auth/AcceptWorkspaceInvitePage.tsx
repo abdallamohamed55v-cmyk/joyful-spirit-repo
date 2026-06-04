@@ -20,7 +20,10 @@ export default function AcceptWorkspaceInvitePage() {
       if (!token) { setError("Invalid link"); setLoading(false); return; }
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
-      if (!user) { setLoading(false); return; }
+      if (!user) {
+        navigate(`/auth?redirect=${encodeURIComponent(`/invite/workspace/${token}`)}`, { replace: true });
+        return;
+      }
       const { data, error: rpcErr } = await supabase.rpc("get_workspace_invite_details" as any, { p_token: token });
       if (rpcErr) { setError(rpcErr.message); setLoading(false); return; }
       const r = data as any;
