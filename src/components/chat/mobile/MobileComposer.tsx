@@ -73,10 +73,8 @@ export default function MobileComposer({
         data-testid="mobile-composer-input"
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
-            e.preventDefault();
-            if (canSend) onSend();
-          }
+          // Mobile composer: Enter inserts a newline by default (no send).
+          // Send happens only via the send button.
         }}
         placeholder={placeholder}
         rows={1}
