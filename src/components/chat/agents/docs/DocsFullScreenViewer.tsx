@@ -186,7 +186,7 @@ export default function DocsFullScreenViewer({
                 >
                   <div className="absolute inset-0 overflow-hidden">
                     <iframe
-                      ref={(el) => (stripIframeRefs.current[i] = el)}
+                      ref={(el) => { stripIframeRefs.current[i] = el; }}
                       title={`thumb-${i}`}
                       sandbox="allow-same-origin"
                       srcDoc={patched}

@@ -1240,7 +1240,7 @@ const ChatPage = () => {
   };
 
   const isSubmittingRef = useRef(false);
-  const sendWithTextRef = useRef<(overrideText?: string) => Promise<void>>();
+  const sendWithTextRef = useRef<((overrideText?: string) => Promise<void>) | undefined>(undefined);
 
   const ownInsertedIdsRef = useRef<Set<string>>(new Set());
 
