@@ -20,6 +20,7 @@ interface FilesInputBarProps {
   input: string;
   onInputChange: (val: string) => void;
   onSubmit: () => void;
+  onCancel?: () => void;
   isGenerating: boolean;
   activeAgent: string | null;
   onAgentChange: (id: string | null) => void;
