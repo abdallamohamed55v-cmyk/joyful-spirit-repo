@@ -10,6 +10,8 @@ import ErrorBoundary, { RouteErrorBoundary } from "@/components/common/ErrorBoun
 import OfflineBanner from "@/components/common/OfflineBanner";
 import CookieConsent from "./components/common/CookieConsent";
 import TranslationWrapper from "./components/common/TranslationWrapper";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 
 // Redirect legacy /tools/<slug> to /images/tools/<slug>
