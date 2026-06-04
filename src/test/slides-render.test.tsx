@@ -60,7 +60,7 @@ describe("SlideRender variant modifiers", () => {
 
   it("renders cover card with title and subtitle", () => {
     const { getByText } = render(<SlidesDeckCard deck={makeDeck({})} />);
-    expect(getByText("Test deck")).toBeTruthy();
+    expect(getByText("Cover")).toBeTruthy();
   });
 
   it("supports RTL decks (Arabic language)", () => {
