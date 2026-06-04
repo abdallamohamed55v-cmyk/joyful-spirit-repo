@@ -20,15 +20,18 @@ export default function AcceptWorkspaceInvitePage() {
       if (!token) { setError("Invalid link"); setLoading(false); return; }
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
-      const { data: inv } = await supabase
-        .from("workspace_invites")
-        .select("*")
-        .eq("invite_token", token)
-        .maybeSingle();
-      if (!inv) { setError("Invite not found or you are not the recipient"); setLoading(false); return; }
-      setInvite(inv);
-      const { data: ws } = await supabase.from("workspaces").select("id, name, avatar_url").eq("id", (inv as any).workspace_id).maybeSingle();
-      setWorkspace(ws);
+      if (!user) { setLoading(false); return; }
+      const { data, error: rpcErr } = await supabase.rpc("get_workspace_invite_details" as any, { p_token: token });
+      if (rpcErr) { setError(rpcErr.message); setLoading(false); return; }
+      const r = data as any;
+      if (!r || r.error) {
+        const msg = r?.error === "expired" ? "This invite has expired"
+          : r?.error === "already_used" ? "This invite has already been used"
+          : "Invite not found";
+        setError(msg); setLoading(false); return;
+      }
+      setInvite({ role: r.role, invite_email: r.invite_email, is_link_invite: r.is_link_invite, inviter_name: r.inviter_name });
+      setWorkspace({ id: r.workspace_id, name: r.workspace_name, avatar_url: r.workspace_avatar });
       setLoading(false);
     })();
   }, [token]);
