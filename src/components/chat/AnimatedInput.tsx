@@ -6,6 +6,7 @@ import ModelPickerDropdown from "@/components/model-picker/ModelPickerDropdown";
 import type { AgentDef, AgentModel } from "@/lib/agentRegistry";
 import { getAgentById } from "@/lib/agentRegistry";
 import { TypingAnimation } from "@/components/ui/typing-animation";
+import { isSendKey } from "@/lib/composerKey";
 
 interface SmartQuestion {
   title: string;
@@ -102,7 +103,8 @@ const AnimatedInput = ({ value, onChange, onSend, onCancel, onPlusClick, disable
       setModelPickerOpen(false);
       return;
     }
-    if (e.key === "Enter" && !e.shiftKey) {
+    // Desktop: Enter sends. Mobile: Enter inserts a newline (no preventDefault).
+    if (isSendKey(e)) {
       e.preventDefault();
       if (mentionOpen || modelPickerOpen) { setMentionOpen(false); setModelPickerOpen(false); return; }
       if (value.trim() && !disabled && !isLoading) onSend();

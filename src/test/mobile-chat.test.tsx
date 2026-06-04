@@ -79,11 +79,11 @@ describe("MobileComposer", () => {
     expect(onChange).toHaveBeenCalledWith("x");
   });
 
-  it("submits on Enter (no shift)", () => {
+  it("does NOT submit on Enter (mobile inserts newline)", () => {
     const onSend = vi.fn();
     render(<MobileComposer value="hi" onChange={() => {}} onSend={onSend} />);
     fireEvent.keyDown(screen.getByTestId("mobile-composer-input"), { key: "Enter" });
-    expect(onSend).toHaveBeenCalledOnce();
+    expect(onSend).not.toHaveBeenCalled();
   });
 
   it("does NOT submit on Shift+Enter", () => {

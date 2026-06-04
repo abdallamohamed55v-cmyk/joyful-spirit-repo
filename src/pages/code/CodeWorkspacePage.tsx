@@ -360,7 +360,7 @@ export default function CodeWorkspacePage() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(input); }
+                  if (e.key === "Enter" && !e.shiftKey && (typeof window === 'undefined' || window.innerWidth >= 768)) { e.preventDefault(); sendMessage(input); }
                 }}
                 placeholder="Request a change or a new feature…"
                 className="flex-1 bg-transparent text-sm resize-none focus:outline-none placeholder:text-white/30 h-16 max-h-32"
