@@ -1,3 +1,4 @@
+import React from "react";
 import { motion } from "framer-motion";
 import type { CSSProperties } from "react";
 
@@ -512,7 +513,7 @@ export type AnimatedIconName =
   | "upscale" | "caption" | "extend" | "green" | "watermark" | "noise"
   | "thumb" | "story";
 
-export const ANIM_REGISTRY: Record<AnimatedIconName, (p: IconProps) => JSX.Element> = {
+export const ANIM_REGISTRY: Record<AnimatedIconName, (p: IconProps) => React.JSX.Element> = {
   brush: BrushAnim, shirt: ShirtAnim, person: PersonAnim, faces: FaceSwapAnim,
   erase: EraseAnim, mask: MaskAnim, palette: PaletteAnim, sparkle: SparkleAnim,
   scissors: ScissorsAnim, pencil: PencilAnim, bulb: BulbAnim, avatar: AvatarAnim,
