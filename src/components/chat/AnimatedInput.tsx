@@ -6,6 +6,7 @@ import ModelPickerDropdown from "@/components/model-picker/ModelPickerDropdown";
 import type { AgentDef, AgentModel } from "@/lib/agentRegistry";
 import { getAgentById } from "@/lib/agentRegistry";
 import { TypingAnimation } from "@/components/ui/typing-animation";
+import { isSendKey } from "@/lib/composerKey";
 
 interface SmartQuestion {
   title: string;
