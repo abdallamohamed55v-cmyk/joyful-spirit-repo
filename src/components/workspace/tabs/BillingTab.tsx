@@ -3,9 +3,8 @@ import { useOutletContext } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, FileText, Download, Wallet } from "lucide-react";
+import { FileText, Download, Wallet } from "lucide-react";
 import { toast } from "sonner";
-import { openWorkspaceCheckout } from "@/lib/workspaceCheckout";
 import type { WorkspaceCtx } from "@/hooks/useWorkspaceContext";
 
 const TOPUP_PACKS = [
@@ -26,11 +25,8 @@ export default function BillingTab() {
     })();
   }, [ws.id]);
 
-  const buyPack = async (credits: number) => {
-    toast.info(`Redirecting to checkout for ${credits} credits…`);
-    const r = await openWorkspaceCheckout("starter", "monthly");
-    if (!r.ok) { toast.error(r.reason); return; }
-    window.location.href = r.url;
+  const buyPack = async (_credits: number) => {
+    toast.info("Credit top-ups are coming soon. For now, upgrade your plan to add monthly credits.");
   };
 
   const downloadInvoice = (t: any) => {
