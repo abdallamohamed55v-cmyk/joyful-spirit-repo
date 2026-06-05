@@ -47,15 +47,13 @@ export async function authorizePremiumSlide(
     await incrementPremiumSlidesUsedToday(userId);
     return { ok: true, charged: false, remainingFree: FREE_PREMIUM_SLIDES_PER_DAY - used - 1 };
   }
-  // Charge 1 credit
-  const { data, error } = await supabase.rpc("deduct_credits", {
-    p_user_id: userId,
-    p_amount: PREMIUM_SLIDES_CREDIT_COST,
-    p_action_type: "premium_slides",
-    p_description: "Premium slides generation (over daily free quota)",
-  } as never);
-  if (error) return { ok: false, reason: "Could not process credit charge" };
-  const result = data as { success?: boolean; error?: string } | null;
-  if (!result?.success) return { ok: false, reason: result?.error || "Insufficient credits" };
+  // Charge 1 credit (workspace-aware)
+  const { spendCredits } = await import("@/lib/workspaceCredits");
+  const result = await spendCredits(
+    PREMIUM_SLIDES_CREDIT_COST,
+    "premium_slides",
+    "Premium slides generation (over daily free quota)",
+  );
+  if (!result.success) return { ok: false, reason: result.error || "Insufficient credits" };
   return { ok: true, charged: true, remainingFree: 0 };
 }
