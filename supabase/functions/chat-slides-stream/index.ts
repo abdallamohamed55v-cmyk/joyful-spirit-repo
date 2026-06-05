@@ -1536,6 +1536,7 @@ serve(async (req) => {
   const audience = typeof body.audience === "string" ? body.audience.slice(0, 60) : undefined;
   const durationMin = Number.isFinite(body.durationMin) ? Number(body.durationMin) : undefined;
   const brandKit = safeParseBrandKit(body.brandKit);
+  const workspaceId = typeof body.workspace_id === "string" ? body.workspace_id : null;
 
   // ── Background mode: return jobId immediately, run pipeline on server ──
   if (background === true && userId) {
