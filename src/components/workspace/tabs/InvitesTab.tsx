@@ -77,7 +77,7 @@ export default function InvitesTab() {
             {inv.status === "pending" && (
               <>
                 <Button size="sm" variant="ghost" onClick={() => copy(inv.invite_token)}><Copy className="w-3.5 h-3.5" /></Button>
-                <Button size="sm" variant="ghost" onClick={() => resend(inv)}><Send className="w-3.5 h-3.5" /></Button>
+                
                 <Button size="sm" variant="ghost" onClick={() => revoke(inv.id)}><Trash2 className="w-3.5 h-3.5 text-destructive" /></Button>
               </>
             )}
