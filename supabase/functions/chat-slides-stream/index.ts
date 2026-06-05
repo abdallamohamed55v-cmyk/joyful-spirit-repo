@@ -1536,7 +1536,14 @@ serve(async (req) => {
   const audience = typeof body.audience === "string" ? body.audience.slice(0, 60) : undefined;
   const durationMin = Number.isFinite(body.durationMin) ? Number(body.durationMin) : undefined;
   const brandKit = safeParseBrandKit(body.brandKit);
-  const workspaceId = typeof body.workspace_id === "string" ? body.workspace_id : null;
+  let workspaceId: string | null = typeof body.workspace_id === "string" ? body.workspace_id : null;
+  if (!workspaceId && userId && SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+      const { data: prof } = await sb.from("profiles").select("active_workspace_id").eq("id", userId).maybeSingle();
+      workspaceId = (prof?.active_workspace_id as string | null) ?? null;
+    } catch { /* ignore */ }
+  }
 
   // ── Background mode: return jobId immediately, run pipeline on server ──
   if (background === true && userId) {
