@@ -54,6 +54,6 @@ export async function authorizePremiumSlide(
     "premium_slides",
     "Premium slides generation (over daily free quota)",
   );
-  if (!result.success) return { ok: false, reason: result.error || "Insufficient credits" };
+  if (!result.success) return { ok: false, reason: (result as any).error || "Insufficient credits" };
   return { ok: true, charged: true, remainingFree: 0 };
 }
