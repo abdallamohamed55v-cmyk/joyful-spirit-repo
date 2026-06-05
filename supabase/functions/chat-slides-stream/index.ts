@@ -941,6 +941,7 @@ async function runSlidesPipeline(opts: {
   durationMin?: number;
   brandKit?: BrandKit;
   userId?: string;
+  workspaceId?: string | null;
   emit: SlidesEmit;
 }): Promise<{ deck: Record<string, unknown> }> {
   const { topic, tplId, requestedTemplateId, palette, isLongInput, subject, referenceMaterial, lang, requestedCount, audience, durationMin, brandKit, userId, emit } = opts;
