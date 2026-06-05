@@ -28,23 +28,13 @@ export default function InvitesTab() {
     const { data, error } = await supabase.rpc("workspace_create_invite" as any, { p_workspace_id: ws.id, p_email: e, p_role: role });
     setSending(false);
     if (error || !(data as any)?.success) { toast.error((data as any)?.error || error?.message); return; }
-    const link = `${window.location.origin}/invite/workspace/${(data as any).token}`;
-    try {
-      await supabase.functions.invoke("workspace-notify", { body: { type: "invite", workspace_id: ws.id, workspace_name: ws.name, to: e, link } });
-    } catch {}
-    toast.success(`Invite sent to ${e}`);
+    const notified = (data as any)?.notified_in_app;
+    toast.success(notified ? `Invite sent — ${e} has been notified in-app` : `Invite created — share the link with ${e}`);
     setEmail(""); load();
   };
 
-  const copy = (t: string) => { navigator.clipboard.writeText(`${window.location.origin}/invite/workspace/${t}`); toast.success("Copied"); };
+  const copy = (t: string) => { navigator.clipboard.writeText(`${window.location.origin}/invite/workspace/${t}`); toast.success("Link copied"); };
   const revoke = async (id: string) => { await supabase.from("workspace_invites").update({ status: "revoked" } as any).eq("id", id); load(); };
-  const resend = async (inv: any) => {
-    const link = `${window.location.origin}/invite/workspace/${inv.invite_token}`;
-    try {
-      await supabase.functions.invoke("workspace-notify", { body: { type: "invite", workspace_id: ws.id, workspace_name: ws.name, to: inv.invite_email, link } });
-      toast.success("Resent");
-    } catch { toast.error("Failed to resend"); }
-  };
 
   if (!isAdmin) return <p className="text-sm text-muted-foreground">Only admins can manage invites.</p>;
 
