@@ -75,8 +75,17 @@ Deno.serve(async (req) => {
   const numImages = Math.max(1, Math.min(4, body.num_images ?? 1));
   const credits = Math.max(1, (model.credits ?? 1) * numImages);
 
-  const { data: deduct, error: deductErr } = await admin.rpc("deduct_credits", {
+  // Resolve workspace_id: explicit body field wins; otherwise use the user's
+  // active workspace from their profile so workspace billing applies everywhere.
+  let workspaceId: string | null = body.workspace_id ?? null;
+  if (!workspaceId) {
+    const { data: prof } = await admin.from("profiles").select("active_workspace_id").eq("id", user.id).maybeSingle();
+    workspaceId = (prof?.active_workspace_id as string | null) ?? null;
+  }
+
+  const { data: deduct, error: deductErr } = await admin.rpc("spend_credits_auto" as any, {
     p_user_id: user.id,
+    p_workspace_id: workspaceId,
     p_amount: credits,
     p_action_type: "leonardo_image_generation",
     p_description: `${model.display_name} (${images.length ? "edit" : "generate"})`,

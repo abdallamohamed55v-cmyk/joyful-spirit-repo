@@ -941,9 +941,10 @@ async function runSlidesPipeline(opts: {
   durationMin?: number;
   brandKit?: BrandKit;
   userId?: string;
+  workspaceId?: string | null;
   emit: SlidesEmit;
 }): Promise<{ deck: Record<string, unknown> }> {
-  const { topic, tplId, requestedTemplateId, palette, isLongInput, subject, referenceMaterial, lang, requestedCount, audience, durationMin, brandKit, userId, emit } = opts;
+  const { topic, tplId, requestedTemplateId, palette, isLongInput, subject, referenceMaterial, lang, requestedCount, audience, durationMin, brandKit, userId, workspaceId, emit } = opts;
   const deadlineAt = Date.now() + SLIDES_JOB_BUDGET_MS;
   const timeRemaining = () => deadlineAt - Date.now();
   const ensureBudget = () => {
@@ -1255,9 +1256,12 @@ Empty fixes only if every slide is genuinely publication-ready. Keep user's lang
   if (userId && SUPABASE_SERVICE_ROLE_KEY) {
     try {
       const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-      await sb.rpc("deduct_credits", {
-        p_user_id: userId, p_amount: 2,
-        p_action_type: "slides_chat", p_description: "Slides via chat",
+      await sb.rpc("spend_credits_auto" as any, {
+        p_user_id: userId,
+        p_workspace_id: workspaceId ?? null,
+        p_amount: 2,
+        p_action_type: "slides_chat",
+        p_description: "Slides via chat",
       });
     } catch (e) { console.warn("credit deduction failed", e); }
   }
@@ -1532,6 +1536,14 @@ serve(async (req) => {
   const audience = typeof body.audience === "string" ? body.audience.slice(0, 60) : undefined;
   const durationMin = Number.isFinite(body.durationMin) ? Number(body.durationMin) : undefined;
   const brandKit = safeParseBrandKit(body.brandKit);
+  let workspaceId: string | null = typeof body.workspace_id === "string" ? body.workspace_id : null;
+  if (!workspaceId && userId && SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+      const { data: prof } = await sb.from("profiles").select("active_workspace_id").eq("id", userId).maybeSingle();
+      workspaceId = (prof?.active_workspace_id as string | null) ?? null;
+    } catch { /* ignore */ }
+  }
 
   // ── Background mode: return jobId immediately, run pipeline on server ──
   if (background === true && userId) {
@@ -1566,7 +1578,7 @@ serve(async (req) => {
       };
       await writer.start({ phase: "search", status_text: "Researching..." });
       const { deck } = await runSlidesPipeline({
-        topic, tplId, requestedTemplateId, palette, isLongInput, subject, referenceMaterial, lang, requestedCount, audience, durationMin, brandKit, userId, emit,
+        topic, tplId, requestedTemplateId, palette, isLongInput, subject, referenceMaterial, lang, requestedCount, audience, durationMin, brandKit, userId, workspaceId, emit,
       });
       await flushEvents(true);
       await writer.complete({ deck });
@@ -1584,7 +1596,7 @@ serve(async (req) => {
           controller.enqueue(enc.encode(`data: ${JSON.stringify(event)}\n\n`));
         };
         await runSlidesPipeline({
-          topic, tplId, requestedTemplateId, palette, isLongInput, subject, referenceMaterial, lang, requestedCount, audience, durationMin, brandKit, userId, emit,
+          topic, tplId, requestedTemplateId, palette, isLongInput, subject, referenceMaterial, lang, requestedCount, audience, durationMin, brandKit, userId, workspaceId, emit,
         });
         controller.enqueue(enc.encode("data: [DONE]\n\n"));
         controller.close();

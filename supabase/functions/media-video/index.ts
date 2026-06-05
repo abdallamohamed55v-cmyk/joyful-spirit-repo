@@ -127,8 +127,15 @@ Deno.serve(async (req) => {
     ? (model.credits_per_video ?? 1)
     : Math.max(1, (model.credits_per_second ?? 1) * duration);
 
-  const { data: deduct, error: deductErr } = await admin.rpc("deduct_credits", {
+  let workspaceId: string | null = body.workspace_id ?? null;
+  if (!workspaceId) {
+    const { data: prof } = await admin.from("profiles").select("active_workspace_id").eq("id", user.id).maybeSingle();
+    workspaceId = (prof?.active_workspace_id as string | null) ?? null;
+  }
+
+  const { data: deduct, error: deductErr } = await admin.rpc("spend_credits_auto" as any, {
     p_user_id: user.id,
+    p_workspace_id: workspaceId,
     p_amount: credits,
     p_action_type: "leonardo_video_generation",
     p_description: `${model.display_name}`,

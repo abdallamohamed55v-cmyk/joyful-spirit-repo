@@ -7519,6 +7519,26 @@ export type Database = {
           similarity: number
         }[]
       }
+      spend_credits_auto:
+        | {
+            Args: {
+              p_action_type: string
+              p_amount: number
+              p_description?: string
+              p_user_id: string
+            }
+            Returns: Json
+          }
+        | {
+            Args: {
+              p_action_type: string
+              p_amount: number
+              p_description?: string
+              p_user_id: string
+              p_workspace_id: string
+            }
+            Returns: Json
+          }
       update_profile_safe: {
         Args: {
           p_avatar_url?: string
@@ -7556,6 +7576,7 @@ export type Database = {
         }
         Returns: Json
       }
+      workspace_decline_invite: { Args: { p_token: string }; Returns: Json }
       workspace_deduct_credits: {
         Args: {
           p_action_type: string
