@@ -1256,9 +1256,12 @@ Empty fixes only if every slide is genuinely publication-ready. Keep user's lang
   if (userId && SUPABASE_SERVICE_ROLE_KEY) {
     try {
       const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-      await sb.rpc("deduct_credits", {
-        p_user_id: userId, p_amount: 2,
-        p_action_type: "slides_chat", p_description: "Slides via chat",
+      await sb.rpc("spend_credits_auto" as any, {
+        p_user_id: userId,
+        p_workspace_id: workspaceId ?? null,
+        p_amount: 2,
+        p_action_type: "slides_chat",
+        p_description: "Slides via chat",
       });
     } catch (e) { console.warn("credit deduction failed", e); }
   }
