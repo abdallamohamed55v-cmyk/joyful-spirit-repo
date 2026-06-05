@@ -15,6 +15,7 @@ const typeConfig: Record<string, { icon: typeof Bell; className: string }> = {
   system: { icon: Settings, className: "text-blue-500" },
   generation: { icon: Sparkles, className: "text-purple-500" },
   referral: { icon: Users, className: "text-green-500" },
+  workspace_invite: { icon: Users, className: "text-primary" },
 };
 
 const NotificationBell = () => {
@@ -24,10 +25,11 @@ const NotificationBell = () => {
   const renderItem = (n: Notification) => {
     const config = typeConfig[n.type] || typeConfig.system;
     const Icon = config.icon;
+    const link = typeof (n.metadata as any)?.link === "string" ? (n.metadata as any).link as string : null;
     return (
       <button
         key={n.id}
-        onClick={() => { markOneRead(n.id); }}
+        onClick={() => { markOneRead(n.id); if (link) navigate(link); }}
         className={`w-full text-left px-4 py-3 flex items-start gap-3 transition-colors ${
           n.read ? "opacity-60" : "bg-accent/30"
         } hover:bg-accent/40 active:bg-accent/50`}
