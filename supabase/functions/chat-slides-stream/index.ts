@@ -1571,7 +1571,7 @@ serve(async (req) => {
       };
       await writer.start({ phase: "search", status_text: "Researching..." });
       const { deck } = await runSlidesPipeline({
-        topic, tplId, requestedTemplateId, palette, isLongInput, subject, referenceMaterial, lang, requestedCount, audience, durationMin, brandKit, userId, emit,
+        topic, tplId, requestedTemplateId, palette, isLongInput, subject, referenceMaterial, lang, requestedCount, audience, durationMin, brandKit, userId, workspaceId, emit,
       });
       await flushEvents(true);
       await writer.complete({ deck });
@@ -1589,7 +1589,7 @@ serve(async (req) => {
           controller.enqueue(enc.encode(`data: ${JSON.stringify(event)}\n\n`));
         };
         await runSlidesPipeline({
-          topic, tplId, requestedTemplateId, palette, isLongInput, subject, referenceMaterial, lang, requestedCount, audience, durationMin, brandKit, userId, emit,
+          topic, tplId, requestedTemplateId, palette, isLongInput, subject, referenceMaterial, lang, requestedCount, audience, durationMin, brandKit, userId, workspaceId, emit,
         });
         controller.enqueue(enc.encode("data: [DONE]\n\n"));
         controller.close();
