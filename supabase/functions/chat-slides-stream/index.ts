@@ -944,7 +944,7 @@ async function runSlidesPipeline(opts: {
   workspaceId?: string | null;
   emit: SlidesEmit;
 }): Promise<{ deck: Record<string, unknown> }> {
-  const { topic, tplId, requestedTemplateId, palette, isLongInput, subject, referenceMaterial, lang, requestedCount, audience, durationMin, brandKit, userId, emit } = opts;
+  const { topic, tplId, requestedTemplateId, palette, isLongInput, subject, referenceMaterial, lang, requestedCount, audience, durationMin, brandKit, userId, workspaceId, emit } = opts;
   const deadlineAt = Date.now() + SLIDES_JOB_BUDGET_MS;
   const timeRemaining = () => deadlineAt - Date.now();
   const ensureBudget = () => {
